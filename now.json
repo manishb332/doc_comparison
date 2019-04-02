@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "name": "doc-comparison",
+    "builds": [
+        { "src": "*.py", "use": "@now/python" , "config": { "maxLambdaSize": "10mb" } }
+    ],    
+    "routes": [
+        { "src": "/", "dest": "/main.py" }
+    ]
+}
