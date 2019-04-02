@@ -1,0 +1,156 @@
+<html>
+<head>
+ <title>Document Comparison - Demo</title>
+</head>
+<style>
+#process {
+  position:fixed;
+  left:950px;
+  top:35px;
+  height:650px;
+  width:400px;
+  <!--border: 2px solid yellow;-->
+}
+#upload_div {
+	position:fixed;
+	top:35px;
+	left:520px;
+	height:295px;
+	width:890px;
+	overflow: auto;
+}
+.container {
+	position:fixed;
+	top:150px;
+	left:70px;
+}
+
+.separator {
+    position:fixed;
+	top:100px;
+	left:550px;
+}
+
+#output {
+	position:fixed;
+	top:300px;
+	left:70px;	
+	height:350px;
+	width:1200px;
+	border: 1px solid black
+	padding-top:15px;
+	padding-left:20px;
+	overflow:auto;
+}
+
+thead {
+  overflow:auto;
+}
+
+
+</style>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/ratchet/2.0.2/css/ratchet.css" rel="stylesheet"/>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<body>
+
+<div id="upload_div">
+	<label for="specs" class="btn btn-positive">Upload Document</label>
+	<label id="specs_label"></label>
+	<input type="file" id="specs" style="visibility:hidden;">
+	<div id="inner_specs_div">
+		<table id="specs_table" border=1 style="width:100%;">
+		</table>
+	</div>
+</div>
+<h2 class="separator">--OR--</h2>
+<div class="container">
+    <br/>
+	<div class="row justify-content-center">
+                        <div class="col-12 col-md-10 col-lg-8">
+                            <form class="card card-sm">
+                                <div class="card-body row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fas fa-search h4 text-body"></i>
+                                    </div>
+                                    <!--end of col-->
+                                    <div class="col">
+                                        <input id="search-term" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                                    </div>
+                                    <!--end of col-->
+                                    <div class="col-auto">
+                                        <button id="search" class="btn btn-lg btn-success">Search</button>
+                                    </div>
+                                    <!--end of col-->
+                                </div>
+                            </form>
+                        </div>
+                        <!--end of col-->
+                    </div>
+</div>
+<div id="output" style="display:none;">
+</div>
+
+</body>
+<script>
+
+document.getElementById('upload_div')
+  .addEventListener('change', getFile)
+ 
+$("#search").click(function(event){
+  event.preventDefault();
+  console.log();
+  var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+			$("#output").empty();
+			obj=this.responseText;
+			$("#output").show();
+			$("#output").append(obj)
+		}
+	};
+	
+  xhttp.open("GET", "/search?q="+$('#search-term').val(), true);
+  xhttp.setRequestHeader("Content-type", "text/plain");
+  xhttp.send("hi");
+});
+
+function getFile(event) {
+	$("#output").empty();
+	$("#output").hide();
+	const input = event.target
+    file_name=input.value.split("\\");
+	file_name=file_name[file_name.length-1]
+	
+	if(file_name=="Krystar 300 Crystalline Spec.pdf"){
+		param="specs/" + file_name
+	}
+	else {
+		param="check/" + file_name
+	}
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+			obj=this.responseText;
+			$("#output").show();
+			$("#output").append(obj)
+		}
+	};
+	
+	xhttp.open("POST", "/"+param, true);
+	xhttp.setRequestHeader("Content-type", "application/pdf");
+	xhttp.send(input.files[0]);
+  }
+
+function search(){
+	
+}
+
+</script>
+</html>
