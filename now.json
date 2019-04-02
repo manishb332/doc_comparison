@@ -5,6 +5,6 @@
         { "src": "*.py", "use": "@now/python" , "config": { "maxLambdaSize": "10mb" } }
     ],    
     "routes": [
-        { "src": "/home", "dest": "/main.py" }
+        { "src": "/index", "dest": "/main.py" }
     ]
 }
