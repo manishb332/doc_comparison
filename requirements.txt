@@ -1,0 +1,12 @@
+json
+pickle
+pandas
+PyPDF2
+camelot
+os
+io
+azure-storage
+gremlin-python
+fuzzywuzzy
+json
+bottle
